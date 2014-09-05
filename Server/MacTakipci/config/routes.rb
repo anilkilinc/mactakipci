@@ -1,4 +1,22 @@
 Rails.application.routes.draw do
+  get 'team/new'
+
+  get 'team/create'
+
+  get 'team/list'
+
+  post 'league/create'
+
+  get 'league/new'
+
+  get 'league/list'
+
+  get 'match/create'
+
+  get 'match/new'
+
+  get 'match/list'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

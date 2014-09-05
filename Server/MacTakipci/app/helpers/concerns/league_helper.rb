@@ -1,0 +1,2 @@
+module Concerns::LeagueHelper
+end

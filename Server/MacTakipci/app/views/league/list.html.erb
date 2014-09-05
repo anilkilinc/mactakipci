@@ -1,0 +1,15 @@
+<h1>All Leagues</h1>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Teams</th>
+  </tr>
+  <% @leagues.each do |item| %>
+      <tr>
+        <td>
+          <a href="match/list"><%=item.name%></a>
+        </td>
+        <td><%=item.team_count%></td>
+      </tr>
+  <% end %>
+</table>
