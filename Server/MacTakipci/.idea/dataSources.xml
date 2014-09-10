@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="2889587534">
+    <data-source source="LOCAL" name="Rails MacTakipci: development" uuid="ea0b8eab-6051-42e1-a98e-adb00d78979e">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Anil\Desktop\Workspace\Private\mactakipci\Server\MacTakipci\db\development.sqlite3</jdbc-url>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+
