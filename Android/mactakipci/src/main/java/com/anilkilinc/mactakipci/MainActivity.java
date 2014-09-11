@@ -1,6 +1,7 @@
 package com.anilkilinc.mactakipci;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,7 @@ import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, PushManager.PushListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -31,6 +32,8 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+    private String SP_GCM= "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,4 +148,20 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    //PushListener fonksiyonları
+    public void onPushRegister(String regid) {
+        ServerUtilities.register(this, regid);
+    }
+
+    public void end() {
+        finish();
+    }
+
+    public void display(String message) {
+
+    }
+
+    public SharedPreferences getGcmPreferences() {
+        return getSharedPreferences(SP_GCM, Context.MODE_PRIVATE);
+    }
 }

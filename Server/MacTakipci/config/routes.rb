@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   get 'team/new'
 
   get 'team/create'
@@ -16,6 +17,10 @@ Rails.application.routes.draw do
   get 'match/new'
 
   get 'match/list'
+
+  get 'gcm/send_message'
+
+  post 'gcm/register'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

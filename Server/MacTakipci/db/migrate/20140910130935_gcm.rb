@@ -5,5 +5,6 @@ class Gcm < ActiveRecord::Migration
       item.timestamps
     end
     create_join_table :users, :teams
+    add_column :matches, :notified, :boolean
   end
 end

@@ -28,33 +28,32 @@ public class PushManager {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     GoogleCloudMessaging gcm;
+    String regid;   //bu uygulamanın gcm registration id'si
+    String gcmNumber;    //projenin gcm kimliği
     AtomicInteger msgId = new AtomicInteger();
-    String regid;
     Activity activity;
+    PushListener listener;
 
-
-    public interface PushListener {
-        public void end();
+    public PushManager(Activity ACTIVITY, String GCM_NUMBER) {
+        activity = ACTIVITY;
+        listener = (PushListener)ACTIVITY;
+        gcmNumber = GCM_NUMBER;
     }
 
-    public PushManager(MainActivity activity) {
-        this.activity = activity;
-    }
 
     /**
      * Check the device to make sure it has the Google Play Services APK. If
      * it doesn't, display a dialog that allows users to download the APK from
      * the Google Play Store or enable it in the device's system settings.
      */
-    private boolean checkPlayServices() {
+    public boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, activity,
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+                GooglePlayServicesUtil.getErrorDialog(resultCode, activity, PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
                 Log.i(TAG, "This device is not supported.");
-                finish();
+                listener.end();
             }
             return false;
         }
@@ -69,7 +68,7 @@ public class PushManager {
      * @param regId registration ID
      */
     private void storeRegistrationId(Context context, String regId) {
-        final SharedPreferences prefs = getGcmPreferences(context);
+        final SharedPreferences prefs = listener.getGcmPreferences();
         int appVersion = getAppVersion(context);
         Log.i(TAG, "Saving regId on app version " + appVersion);
         SharedPreferences.Editor editor = prefs.edit();
@@ -87,7 +86,7 @@ public class PushManager {
      *         registration ID.
      */
     private String getRegistrationId(Context context) {
-        final SharedPreferences prefs = getGcmPreferences(context);
+        final SharedPreferences prefs = listener.getGcmPreferences();
         String registrationId = prefs.getString(PROPERTY_REG_ID, "");
         if (registrationId.isEmpty()) {
             Log.i(TAG, "Registration not found.");
@@ -144,7 +143,7 @@ public class PushManager {
 
             @Override
             protected void onPostExecute(String msg) {
-                mDisplay.append(msg + "\n");
+                listener.display(msg);
             }
         }.execute(null, null, null);
     }
@@ -164,20 +163,19 @@ public class PushManager {
     }
 
     /**
-     * @return Application's {@code SharedPreferences}.
-     */
-    private SharedPreferences getGcmPreferences(Context context) {
-        // This sample app persists the registration ID in shared preferences, but
-        // how you store the regID in your app  up to you.
-        return activity.getSharedPreferences(DemoisActivity.class.getSimpleName(),
-                Context.MODE_PRIVATE);
-    }
-    /**
      * Sends the registration ID to your server over HTTP, so it can use GCM/HTTP or CCS to send
      * messages to your app. Not needed for this demo since the device sends upstream messages
      * to a server that echoes back the message using the 'from' address in the message.
      */
     private void sendRegistrationIdToBackend() {
         // Your implementation here.
+        listener.onPushRegister(regid);
+    }
+
+    public interface PushListener {
+        public void onPushRegister(String registrationId);
+        public void end();
+        public void display(String message);
+        public SharedPreferences getGcmPreferences();
     }
 }
