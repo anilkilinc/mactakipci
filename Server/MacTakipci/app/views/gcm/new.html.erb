@@ -1,0 +1,7 @@
+<h1>Test#gcm new</h1>
+<%= form_tag("/gcm/register.json", method: "post") do %>
+    <%= label_tag(:regid, "GCM_ID:") %>
+    <%= text_field_tag(:regid) %>
+    <%= submit_tag("Create") %>
+<% end %>
+<p>Find me in app/views/test/gcm_register_test.html.erb</p>

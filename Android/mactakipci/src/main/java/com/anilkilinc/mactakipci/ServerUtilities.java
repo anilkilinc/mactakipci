@@ -3,13 +3,24 @@ package com.anilkilinc.mactakipci;
 import android.content.Context;
 import android.util.Log;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -28,7 +39,7 @@ public final class ServerUtilities {
         Log.i(Common.TAG, "registering device (regId = " + regId + ")");
         String serverUrl = Common.SERVER_URL;
         Map<String, String> params = new HashMap<String, String>();
-        params.put("regId", regId);
+        params.put("regid", regId);
         //params.put("name", name);
         //params.put("email", email);
         
@@ -41,12 +52,13 @@ public final class ServerUtilities {
             try {
                         Common.displayMessage(context, context.getString(
                         R.string.server_registering, i, MAX_ATTEMPTS));
-                post(serverUrl, params);
+                //post(serverUrl, params);
+                postData(serverUrl, regId);
 //                GCMRegistrar.setRegisteredOnServer(context, true);
                 String message = context.getString(R.string.server_registered);
                 Common.displayMessage(context, message);
                 return;
-            } catch (IOException e) {
+            } catch (Exception e) {
                 // Here we are simplifying and retrying on any error; in a real
                 // application, it should retry only on unrecoverable errors
                 // (like HTTP error code 503).
@@ -132,12 +144,11 @@ public final class ServerUtilities {
         try {
         	Log.e("URL", "> " + url);
             conn = (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-            conn.setUseCaches(false);
-            conn.setFixedLengthStreamingMode(bytes.length);
+            //conn.setDoOutput(true);
+            //conn.setUseCaches(false);
+            //conn.setFixedLengthStreamingMode(bytes.length);
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded;charset=UTF-8");
+            //conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
             // post the request
             OutputStream out = conn.getOutputStream();
             out.write(bytes);
@@ -154,4 +165,27 @@ public final class ServerUtilities {
             }
         }
       }
+
+    public static void postData(String url, String regId) {
+        // Create a new HttpClient and Post Header
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost(url);
+
+        try {
+            // Add your data
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("regid", regId));
+            //nameValuePairs.add(new BasicNameValuePair("stringdata", "Hi"));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            // Execute HTTP Post Request
+            HttpResponse response = httpclient.execute(httppost);
+            Log.i("!!!", response.toString());
+
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+        }
+    }
 }

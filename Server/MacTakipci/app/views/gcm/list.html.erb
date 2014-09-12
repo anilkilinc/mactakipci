@@ -1,0 +1,20 @@
+<h1>Gcm#list</h1>
+<% @devices.each do |p| %>
+<%end%>
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Gcm Device Id</th>
+  </tr>
+  <% @devices.each do |item| %>
+      <tr>
+        <td>
+          <%=item.id%>
+        </td>
+        <td><a><%=item.gcm_regid%></a><br>
+        </td>
+      </tr>
+  <% end %>
+</table>
+
+<p>Find me in app/views/gcm/list.html.erb</p>

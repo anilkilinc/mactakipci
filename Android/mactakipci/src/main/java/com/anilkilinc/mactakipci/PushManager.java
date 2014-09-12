@@ -28,8 +28,8 @@ public class PushManager {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     GoogleCloudMessaging gcm;
-    String regid;   //bu uygulamanın gcm registration id'si
-    String gcmNumber;    //projenin gcm kimliği
+    String gcmDeviceId;   //bu uygulamanın gcm registration id'si
+    String gcmAppId;    //projenin gcm kimliği
     AtomicInteger msgId = new AtomicInteger();
     Activity activity;
     PushListener listener;
@@ -37,7 +37,7 @@ public class PushManager {
     public PushManager(Activity ACTIVITY, String GCM_NUMBER) {
         activity = ACTIVITY;
         listener = (PushListener)ACTIVITY;
-        gcmNumber = GCM_NUMBER;
+        gcmAppId = GCM_NUMBER;
     }
 
 
@@ -119,8 +119,8 @@ public class PushManager {
                     if (gcm == null) {
                         gcm = GoogleCloudMessaging.getInstance(activity);
                     }
-                    regid = gcm.register(Common.SENDER_ID);
-                    msg = "Device registered, registration ID=" + regid;
+                    gcmDeviceId = gcm.register(Common.GCM_APP_ID);
+                    msg = "Device registered, registration ID=" + gcmDeviceId;
 
                     // You should send the registration ID to your server over HTTP, so it
                     // can use GCM/HTTP or CCS to send messages to your app.
@@ -131,7 +131,7 @@ public class PushManager {
                     // 'from' address in the message.
 
                     // Persist the regID - no need to register again.
-                    storeRegistrationId(activity, regid);
+                    storeRegistrationId(activity, gcmDeviceId);
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
                     // If there is an error, don't just keep trying to register.
@@ -169,7 +169,23 @@ public class PushManager {
      */
     private void sendRegistrationIdToBackend() {
         // Your implementation here.
-        listener.onPushRegister(regid);
+        listener.onPushRegister(gcmDeviceId);
+    }
+
+    public void startRegistration() {
+        if (checkPlayServices()) {
+            gcm = GoogleCloudMessaging.getInstance(activity);
+            gcmDeviceId = getRegistrationId(activity);
+
+            if (true) {
+            //if (gcmDeviceId.isEmpty()) {
+                registerInBackground();
+            } else {
+                Log.i(TAG, "!!! ALREADY REGISTERED!");
+            }
+        } else {
+            Log.i(TAG, "No valid Google Play Services APK found.");
+        }
     }
 
     public interface PushListener {

@@ -1,9 +1,17 @@
 class GcmController < ApplicationController
   def register
-    @reg_id = params[:reg_id]
-    @user = User.create :reg_id=>@reg_id
+    @regid = params[:regid]
+    @user = User.create :gcm_regid=>@regid
   end
 
   def send_message
+  end
+
+  def list
+    @devices = User.all
+  end
+
+  def new
+
   end
 end

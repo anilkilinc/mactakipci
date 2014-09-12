@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+
+
+  get 'test/gcm_register_test'
+
   get 'team/new'
 
   get 'team/create'
@@ -21,6 +25,10 @@ Rails.application.routes.draw do
   get 'gcm/send_message'
 
   post 'gcm/register'
+
+  get 'gcm/list'
+
+  get 'gcm/new'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

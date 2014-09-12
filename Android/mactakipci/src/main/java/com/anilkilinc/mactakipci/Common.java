@@ -12,13 +12,13 @@ public class Common {
     static String TAG = "mactakipci";
 
     // give your server registration url here
-    static final String SERVER_URL = "http://192.168.1.69/gcm_server_php/register.php";
+    static final String SERVER_URL = "http://192.168.1.69/gcm/register.json";
 
     // Google project id
-    static final String SENDER_ID = "810790313874";
+    static final String GCM_APP_ID = "810790313874";
 
     static final String DISPLAY_MESSAGE_ACTION =
-            "com.anil.pushtutorial.DISPLAY_MESSAGE";
+            "com.anil.mactakipci.DISPLAY_MESSAGE";
 
     static final String EXTRA_MESSAGE = "message";
 

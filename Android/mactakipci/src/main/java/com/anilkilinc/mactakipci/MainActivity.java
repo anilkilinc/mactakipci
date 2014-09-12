@@ -7,21 +7,21 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, PushManager.PushListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, PushManager.PushListener, View.OnClickListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -34,6 +34,7 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
 
     private String SP_GCM= "";
+    private PushManager pushManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,23 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //check the push service availability
+        pushManager = new PushManager(this, Common.GCM_APP_ID);
+        //pushManager.checkPlayServices();
+        pushManager.startRegistration();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.search_close_btn) {
+            pushManager.startRegistration();
+        }
     }
 
     @Override
