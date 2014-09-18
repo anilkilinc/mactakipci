@@ -177,11 +177,12 @@ public class PushManager {
             gcm = GoogleCloudMessaging.getInstance(activity);
             gcmDeviceId = getRegistrationId(activity);
 
-            if (true) {
-            //if (gcmDeviceId.isEmpty()) {
+            //if (true) {
+            if (gcmDeviceId.isEmpty()) {
                 registerInBackground();
             } else {
                 Log.i(TAG, "!!! ALREADY REGISTERED!");
+                listener.onPushRegister(gcmDeviceId);
             }
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");

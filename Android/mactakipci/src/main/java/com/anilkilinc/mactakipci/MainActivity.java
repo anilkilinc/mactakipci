@@ -55,10 +55,7 @@ public class MainActivity extends ActionBarActivity
     protected void onStart() {
         super.onStart();
 
-        //check the push service availability
-        pushManager = new PushManager(this, Common.GCM_APP_ID);
-        //pushManager.checkPlayServices();
-        pushManager.startRegistration();
+
     }
 
     @Override
@@ -166,10 +163,7 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
-    //PushListener fonksiyonları
-    public void onPushRegister(String regid) {
-        ServerUtilities.register(this, regid);
-    }
+
 
     public void end() {
         finish();

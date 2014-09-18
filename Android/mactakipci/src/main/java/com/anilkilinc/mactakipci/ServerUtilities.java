@@ -35,10 +35,12 @@ public final class ServerUtilities {
      * Register this account/device pair within the server.
      *
      */
-    static void register(final Context context, final String regId) {
+    static int register(final Context context, final String regId) {
+        int result = -1;
         Log.i(Common.TAG, "registering device (regId = " + regId + ")");
-        String serverUrl = Common.SERVER_URL;
-        Map<String, String> params = new HashMap<String, String>();
+        final String serverUrl = Common.SERVER_URL;
+        final Map<String, String> params = new HashMap<String, String>();
+        //params.put("regid", regId);
         params.put("regid", regId);
         //params.put("name", name);
         //params.put("email", email);
@@ -50,14 +52,13 @@ public final class ServerUtilities {
         for (int i = 1; i <= MAX_ATTEMPTS; i++) {
             Log.d(Common.TAG, "Attempt #" + i + " to register");
             try {
-                        Common.displayMessage(context, context.getString(
-                        R.string.server_registering, i, MAX_ATTEMPTS));
-                //post(serverUrl, params);
-                postData(serverUrl, regId);
+                Common.displayMessage(context, context.getString(
+                                R.string.server_registering, i, MAX_ATTEMPTS));
+                result = post(serverUrl, params);
+//                post(serverUrl, regId);
 //                GCMRegistrar.setRegisteredOnServer(context, true);
                 String message = context.getString(R.string.server_registered);
                 Common.displayMessage(context, message);
-                return;
             } catch (Exception e) {
                 // Here we are simplifying and retrying on any error; in a real
                 // application, it should retry only on unrecoverable errors
@@ -73,7 +74,6 @@ public final class ServerUtilities {
                     // Activity finished before we complete - exit.
                     Log.d(Common.TAG, "Thread interrupted: abort remaining retries!");
                     Thread.currentThread().interrupt();
-                    return;
                 }
                 // increase backoff exponentially
                 backoff *= 2;
@@ -117,9 +117,9 @@ public final class ServerUtilities {
      *
      * @throws java.io.IOException propagated from POST.
      */
-    private static void post(String endpoint, Map<String, String> params)
+    private static int post(String endpoint, Map<String, String> params)
             throws IOException {   	
-        
+        int status = -1;
         URL url;
         try {
             url = new URL(endpoint);
@@ -144,18 +144,18 @@ public final class ServerUtilities {
         try {
         	Log.e("URL", "> " + url);
             conn = (HttpURLConnection) url.openConnection();
-            //conn.setDoOutput(true);
-            //conn.setUseCaches(false);
-            //conn.setFixedLengthStreamingMode(bytes.length);
+            conn.setDoOutput(true);
+            conn.setUseCaches(false);
+            conn.setFixedLengthStreamingMode(bytes.length);
             conn.setRequestMethod("POST");
-            //conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
             // post the request
             OutputStream out = conn.getOutputStream();
             out.write(bytes);
             out.close();
             // handle the response
             String responseMessage = conn.getResponseMessage();
-            int status = conn.getResponseCode();
+            status = conn.getResponseCode();
             if (status != 200) {
               throw new IOException("Post failed with error code " + status);
             }
@@ -163,6 +163,7 @@ public final class ServerUtilities {
             if (conn != null) {
                 conn.disconnect();
             }
+            return status;
         }
       }
 

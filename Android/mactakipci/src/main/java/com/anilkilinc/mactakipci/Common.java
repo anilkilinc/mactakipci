@@ -14,7 +14,7 @@ public class Common {
     // give your server registration url here
     static final String SERVER_URL = "http://192.168.1.69/gcm/register.json";
 
-    // Google project id
+    // Google project id, which belongs to the application
     static final String GCM_APP_ID = "810790313874";
 
     static final String DISPLAY_MESSAGE_ACTION =

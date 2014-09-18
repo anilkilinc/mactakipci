@@ -11,52 +11,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140911143830) do
-
-  create_table "leagues", force: true do |t|
-    t.string  "name"
-    t.integer "team_count"
-  end
-
-  create_table "leagues_teams", id: false, force: true do |t|
-    t.integer "team_id",          null: false
-    t.integer "league_id",        null: false
-    t.integer "played"
-    t.integer "won"
-    t.integer "drawn"
-    t.integer "lost"
-    t.integer "goals_for"
-    t.integer "goals_against"
-    t.integer "goals_difference"
-    t.integer "points"
-  end
-
-  create_table "matches", force: true do |t|
-    t.integer "league_id"
-    t.integer "week_id"
-    t.integer "home_id"
-    t.integer "away_id"
-    t.date    "date"
-    t.string  "score"
-    t.boolean "notified"
-  end
-
-  create_table "subscriptions", id: false, force: true do |t|
-    t.integer  "user_id",    null: false
-    t.integer  "team_id",    null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "teams", force: true do |t|
-    t.string "name"
-    t.string "short_name"
-  end
-
-  create_table "users", force: true do |t|
-    t.string   "gcm_regid"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+ActiveRecord::Schema.define(version: 0) do
 
 end
