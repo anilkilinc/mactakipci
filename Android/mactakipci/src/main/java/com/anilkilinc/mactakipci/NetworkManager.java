@@ -2,6 +2,8 @@ package com.anilkilinc.mactakipci;
 
 import android.content.Context;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -16,27 +18,26 @@ import java.net.URL;
  */
 public class NetworkManager {
 
+    public static final String ROOT = "";
+    public static final String REGISTER_PUSH_TOKEN = "";
 
-    public static void registerPushToken(Context context, final RequestCallBack callback, String deviceToken) {
+    public static void registerPushToken(Context context, final NetworkCallback callback, String deviceToken) {
 
-        StringBuilder parameters = new StringBuilder(URL);
-        parameters.append(REGISTER_PUSH_TOKEN).append("push_token=" + deviceToken).append("&platform=android");
-        String urlWithFullParameters = addDefaultParameters(context, parameters.toString());
-        if(urlWithFullParameters == null) {
-            callback.onRequestError(null);
-        }
+        StringBuilder parameters = new StringBuilder(ROOT);
+//        parameters.append(REGISTER_PUSH_TOKEN).append("push_token=" + deviceToken).append("&platform=android");
+        parameters.append(REGISTER_PUSH_TOKEN);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, urlWithFullParameters, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, parameters, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
                 if (response.optBoolean("error") == true) {
                     GongError e = new GongError(response);
                     if (callback != null) {
-                        callback.onRequestError(e);
+                        callback.onError(e);
                     }
                 } else if (callback != null)
-                    callback.onRequestComplete(response);
+                    callback.onResponse(response);
 
 
             }
@@ -45,7 +46,7 @@ public class NetworkManager {
             public void onErrorResponse(VolleyError error) {
 
                 if (callback != null)
-                    callback.onRequestError(new GongError(error));
+                    callback.onError(new GongError(error));
             }
         }
         );
@@ -53,4 +54,13 @@ public class NetworkManager {
         Pyramid.getInstance().getRequestQueue().add(jsonObjectRequest);
     }
 
+    /**
+     * timeout 30 saniye olarak ayarlanıyor. Volley'de default 3 saniye geliyor.
+     * Bunu her metod için ayarlamak gerek.
+     */
+    public static DefaultRetryPolicy getRetryPolicy() {
+
+        DefaultRetryPolicy p = new DefaultRetryPolicy(10 * 1000, 1, 1.0f);
+        return p;
+    }
 }
