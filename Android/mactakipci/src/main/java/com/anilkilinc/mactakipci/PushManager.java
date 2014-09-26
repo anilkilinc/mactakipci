@@ -68,13 +68,14 @@ public class PushManager {
      * @param regId registration ID
      */
     private void storeRegistrationId(Context context, String regId) {
-        final SharedPreferences prefs = listener.getGcmPreferences();
-        int appVersion = getAppVersion(context);
-        Log.i(TAG, "Saving regId on app version " + appVersion);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(PROPERTY_REG_ID, regId);
-        editor.putInt(PROPERTY_APP_VERSION, appVersion);
-        editor.commit();
+//        final SharedPreferences prefs = listener.getGcmPreferences();
+//        int appVersion = getAppVersion(context);
+//        Log.i(TAG, "Saving regId on app version " + appVersion);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putString(PROPERTY_REG_ID, regId);
+//        editor.putInt(PROPERTY_APP_VERSION, appVersion);
+//        editor.commit();
+        SharedPreferenceManager.spSetGcmId(context, regId);
     }
 
     /**
@@ -175,7 +176,8 @@ public class PushManager {
     public void startRegistration() {
         if (checkPlayServices()) {
             gcm = GoogleCloudMessaging.getInstance(activity);
-            gcmDeviceId = getRegistrationId(activity);
+//            gcmDeviceId = getRegistrationId(activity);
+            gcmDeviceId = SharedPreferenceManager.spGetGcmId(activity);
 
             //if (true) {
             if (gcmDeviceId.isEmpty()) {

@@ -59,6 +59,7 @@ public final class ServerUtilities {
 //                GCMRegistrar.setRegisteredOnServer(context, true);
                 String message = context.getString(R.string.server_registered);
                 Common.displayMessage(context, message);
+                return result;
             } catch (Exception e) {
                 // Here we are simplifying and retrying on any error; in a real
                 // application, it should retry only on unrecoverable errors
@@ -82,6 +83,7 @@ public final class ServerUtilities {
         String message = context.getString(R.string.server_register_error,
                 MAX_ATTEMPTS);
         Common.displayMessage(context, message);
+        return result;
     }
 
     /**

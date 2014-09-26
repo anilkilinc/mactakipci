@@ -3,7 +3,4 @@
   <data-source source="LOCAL" name="Rails MacTakipci: development" uuid="ea0b8eab-6051-42e1-a98e-adb00d78979e">
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
-  <data-source source="LOCAL" name="Rails MacTakipci: test" uuid="01f695b7-ffb4-418a-adba-993a53d42653">
-    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
-  </data-source>
 </component>

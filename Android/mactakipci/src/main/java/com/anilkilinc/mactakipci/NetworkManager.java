@@ -27,31 +27,31 @@ public class NetworkManager {
 //        parameters.append(REGISTER_PUSH_TOKEN).append("push_token=" + deviceToken).append("&platform=android");
         parameters.append(REGISTER_PUSH_TOKEN);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, parameters, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-                if (response.optBoolean("error") == true) {
-                    GongError e = new GongError(response);
-                    if (callback != null) {
-                        callback.onError(e);
-                    }
-                } else if (callback != null)
-                    callback.onResponse(response);
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                if (callback != null)
-                    callback.onError(new GongError(error));
-            }
-        }
-        );
-        jsonObjectRequest.setRetryPolicy(getRetryPolicy());
-        Pyramid.getInstance().getRequestQueue().add(jsonObjectRequest);
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, parameters, null, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//
+//                if (response.optBoolean("error") == true) {
+//                    GongError e = new GongError(response);
+//                    if (callback != null) {
+//                        callback.onError(e);
+//                    }
+//                } else if (callback != null)
+//                    callback.onResponse(response);
+//
+//
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//                if (callback != null)
+//                    callback.onError(new GongError(error));
+//            }
+//        }
+//        );
+//        jsonObjectRequest.setRetryPolicy(getRetryPolicy());
+//        Pyramid.getInstance().getRequestQueue().add(jsonObjectRequest);
     }
 
     /**

@@ -19,6 +19,6 @@ public class SharedPreferenceManager {
 
     public static String spGetGcmId(Context context) {
         SharedPreferences sp = context.getSharedPreferences(MACTAKIPCI_SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sp.getString(SP_GCM_ID, null);
+        return sp.getString(SP_GCM_ID, "");
     }
 }

@@ -1,4 +1,4 @@
-class PNManager
+class PnManager
 
   def self.send_notification push_token,platform,notification
     if !(Rails.env.production? || Rails.env.staging?)
@@ -18,11 +18,33 @@ class PNManager
     elsif platform == 'android'
       GCM.host = 'https://android.googleapis.com/gcm/send'
       GCM.format = :json
-      GCM.key = "AIzaSyDppFGZUuyITM7g0SBB_C9tx0GNMJpswO0"
+      GCM.key = "AIzaSyBbdwlKFfzJyh8puufGUaYXQX3UxYLWNEg"
       destination = [push_token]
       GCM.send_notification( destination, notification)
     end
   end
+
+  #ANIL
+  def self.send push_token, notification
+    GCM.host = 'https://android.googleapis.com/gcm/send'
+    GCM.format = :json
+    GCM.key = "AIzaSyBbdwlKFfzJyh8puufGUaYXQX3UxYLWNEg"
+    destination = [push_token]
+    GCM.send_notification( destination, notification)
+  end
+
+  def self.gcm_test user_id
+    #get push token from user id
+    user = User.find(user_id)
+    gcm_id = user.gcm_regid
+    PnManager.send gcm_id, {
+        :team => 'Galata',
+        :league => 'CL 2014',
+        :type => 'test'
+    }
+  end
+  #ANIL
+
 
   def self.truncate_message message
     if message

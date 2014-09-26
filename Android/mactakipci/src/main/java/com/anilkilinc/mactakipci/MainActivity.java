@@ -1,6 +1,7 @@
 package com.anilkilinc.mactakipci;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -163,7 +164,12 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
-
+    @Override
+    public void onPushRegister(String registrationId) {
+        Log.i("!!!", "Registered to GCM with id: " + registrationId);
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
 
     public void end() {
         finish();

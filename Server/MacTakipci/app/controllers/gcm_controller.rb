@@ -14,4 +14,8 @@ class GcmController < ApplicationController
   def new
 
   end
+
+  def test
+    PnManager.gcm_test "1"
+  end
 end
